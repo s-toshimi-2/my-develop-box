@@ -1,0 +1,45 @@
+---
+- name: install yum modules for ruby install
+  yum: >
+    name={{ item }}
+    state=installed
+  with_items:
+    - gcc
+    - gcc-c++
+    - git
+    - libffi-devel
+    - make
+    - openssl-devel
+    - patch
+
+- name: install rbenv
+  command: >
+    git clone https://github.com/sstephenson/rbenv.git /home/vagrant/.rbenv
+    creates=/home/vagrant/.rbenv
+  sudo: no
+
+- name: check rbenv path is added
+  shell: grep '.rbenv/bin' /home/vagrant/.bash_profile
+  register: check_rbenv
+  failed_when: check_rbenv.rc not in [0, 1]
+
+- name: set add path
+  shell: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/vagrant/.bash_profile && echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bash_profile
+  when: check_rbenv.rc == 1
+  sudo: no
+
+- name: install ruby-build
+  command: >
+    git clone https://github.com/sstephenson/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build
+    creates=/home/vagrant/.rbenv/plugins/ruby-build
+  sudo: no
+
+- name: check ruby-build is installed
+  shell: which ruby-build
+  register: which_ruby_build
+  failed_when: which_ruby_build.rc not in [0, 1]
+  sudo: no
+
+- name: install ruby-build command
+  command: /home/vagrant/.rbenv/plugins/ruby-build/install.sh
+  when: which_ruby_build.rc == 1
