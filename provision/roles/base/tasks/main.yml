@@ -1,1 +1,13 @@
 ---
+- name: install basic modules
+  yum: >
+    name={{ item }}
+    state=installed
+  with_items:
+    - jq
+    - nkf
+    - ntp
+    - screen
+    - tree
+    - wget
+    - zsh
