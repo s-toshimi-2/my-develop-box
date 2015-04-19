@@ -17,3 +17,12 @@
   command: >
     git clone https://github.com/sstephenson/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build
     creates=/home/vagrant/.rbenv/plugins/ruby-build
+
+- name: check ruby-build is installed
+  shell: which ruby-build
+  register: which_ruby_build
+  failed_when: which_ruby_build.rc not in [0, 1]
+
+- name: install ruby-build command
+  command: /home/vagrant/.rbenv/plugins/ruby-build/install.sh
+  when: which_ruby_build.rc == 1
