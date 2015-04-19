@@ -1,0 +1,6 @@
+- name: setting my develop environment
+  hosts: vagrant
+  user: vagrant
+  sudo: yes
+  roles:
+    - base
