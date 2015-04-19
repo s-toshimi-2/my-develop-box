@@ -1,0 +1,19 @@
+---
+- name: install rbenv
+  command: >
+    git clone https://github.com/sstephenson/rbenv.git /home/vagrant/.rbenv
+    creates=/home/vagrant/.rbenv
+
+- name: check rbenv path is added
+  shell: grep '.rbenv/bin' /home/vagrant/.bash_profile
+  register: check_rbenv
+  failed_when: check_rbenv.rc not in [0, 1]
+
+- name: set add path
+  shell: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/vagrant/.bash_profile
+  when: check_rbenv.rc == 1
+
+- name: install ruby-build
+  command: >
+    git clone https://github.com/sstephenson/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build
+    creates=/home/vagrant/.rbenv/plugins/ruby-build
