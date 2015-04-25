@@ -1,0 +1,24 @@
+---
+- name: set epel reposotory
+  yum: >
+    name=http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    state=present
+- name: install the necessary modules
+  yum: >
+    name={{ item }}
+    state=installed
+  with_items:
+    - gcc
+    - bison
+    - libxml2
+    - libxml2-devel
+    - openssl-devel
+    - libcurl-devel
+    - libjpeg-turbo-devel
+    - libpng-devel
+    - libmcrypt-devel
+    - readline-devel
+    - libtidy-devel
+    - libxslt-devel
+    - httpd-devel
+ 
