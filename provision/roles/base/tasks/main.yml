@@ -16,4 +16,6 @@
     name={{ item }}
   with_items:
     - "@japanese-support"
-
+- name: set JST timezone
+  shell: cp -p /usr/share/zoneinfo/Japan /etc/localtime
+  changed_when: false
