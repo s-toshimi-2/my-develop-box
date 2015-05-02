@@ -11,3 +11,9 @@
     - tree
     - wget
     - zsh
+- name: install japanese support
+  yum: >
+    name={{ item }}
+  with_items:
+    - "@japanese-support"
+
