@@ -6,3 +6,12 @@
   with_items:
     - httpd
     - php
+- name: Place apache config
+  template: >
+    src=httpd.conf
+    dest=/etc/httpd/conf/httpd.conf
+    mode=0644
+    owner=root
+    group=root
+  notify:
+    - restart httpd
