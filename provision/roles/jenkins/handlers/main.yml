@@ -1,0 +1,7 @@
+---
+- include: ../../httpd/handlers/main.yml
+- name: Restart Jenkins
+  service: >
+    name=jenkins
+    state=running
+    enabled=yes

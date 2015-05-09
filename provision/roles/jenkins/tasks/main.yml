@@ -1,0 +1,38 @@
+---
+- name: Install modules for need to install Jenkins
+  yum: >
+    name={{ item }}
+    state=present
+  with_items:
+    - wget
+    - java-1.7.0-openjdk
+- name: Add Jenkins repository
+  shell: wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+  args:
+    creates: /etc/yum.repos.d/jenkins.repo
+- name: Add Jenkins key
+  shell: rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+- name: Install Jenkins
+  yum: >
+    name={{ item }}
+    state=present
+  with_items:
+    - jenkins
+- name: Place Jenkins config
+  template: >
+    src=jenkins
+    dest=/etc/sysconfig/jenkins
+    mode=0600
+    owner=root
+    group=root
+  notify:
+    - Restart Jenkins
+- name: Place Jenkins proxy config
+  template: >
+    src=jenkins.conf
+    dest=/etc/httpd/conf.d/jenkins.conf
+    mode=0644
+    owner=root
+    group=root
+  notify:
+    - restart httpd
