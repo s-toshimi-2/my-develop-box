@@ -19,14 +19,14 @@
     group=root
   notify:
     - restart MySQL
-#- name: create database user with name 'vagrant' and password 'vagrant_pass' with all database privileges
--  mysql_user: >
-    name=vagrant
-    password=vagrant_pass
-    priv=*.*:ALL
-    state=present
 - name: start MySQL
   service: >
     name=mysqld
     state=running
     enabled=yes
+- name: create database user with name 'vagrant' and password 'vagrant_pass' with all database privileges
+  mysql_user: >
+    name=vagrant
+    password=vagrant_pass
+    priv=*.*:ALL
+    state=present
